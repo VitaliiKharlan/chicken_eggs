@@ -81,7 +81,7 @@ class _GradientBorderPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
 
-    
+
     canvas.drawRRect(outer, paint);
   }
 
