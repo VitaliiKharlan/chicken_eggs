@@ -7,8 +7,8 @@ import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/bring_back_button_widget.dart';
 
 @RoutePage()
-class HowToPlayScreen extends StatelessWidget {
-  const HowToPlayScreen({super.key});
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +64,14 @@ class HowToPlayScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'HOW TO PLAY',
+                      'PRIVACY \nPOLICY',
                       style: GoogleFonts.rubikMonoOne(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.5,
                         color: Colors.white,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 120),
                     Text(

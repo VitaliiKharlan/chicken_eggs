@@ -41,14 +41,7 @@ class MenuScreen extends StatelessWidget {
                   InkWell(
                     child: BringBackButtonWidget(),
                     onTap: () {
-                      print('Back button tapped');
-                      try {
-                        context.router.replace(const HowToPlayRoute());
-                        print('Navigation triggered');
-                      } catch (e, stack) {
-                        print('Navigation error: $e');
-                        print(stack);
-                      }
+                      context.router.replace(const HowToPlayRoute());
                     },
                   ),
 
@@ -87,16 +80,12 @@ class MenuScreen extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 24),
-                    MenuButtonWidget(text: 'PlAY', onPressed: () {
-                      print('Play button tapped');
-                      try {
+                    MenuButtonWidget(
+                      text: 'PlAY',
+                      onPressed: () {
                         context.router.replace(const HowToPlayRoute());
-                        print('Navigation triggered');
-                      } catch (e, stack) {
-                        print('Navigation error: $e');
-                        print(stack);
-                      }
-                    }),
+                      },
+                    ),
                     const SizedBox(height: 12),
                     MenuButtonWidget(text: 'PROFILE', onPressed: () {}),
                     const SizedBox(height: 12),
@@ -110,10 +99,14 @@ class MenuScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     MenuButtonWidget(
                       text: 'PRIVACY \nPOLICY',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.router.replace(const PrivacyPolicyRoute());
+                      },
                     ),
                     const SizedBox(height: 12),
-                    MenuButtonWidget(text: 'TERM \nOF USE', onPressed: () {}),
+                    MenuButtonWidget(text: 'TERM \nOF USE', onPressed: () {
+                      context.router.push(const TermsOfUseRoute());
+                    }),
                     const SizedBox(height: 12),
                   ],
                 ),

@@ -7,8 +7,8 @@ import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/bring_back_button_widget.dart';
 
 @RoutePage()
-class HowToPlayScreen extends StatelessWidget {
-  const HowToPlayScreen({super.key});
+class TermsOfUseScreen extends StatelessWidget {
+  const TermsOfUseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class HowToPlayScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'HOW TO PLAY',
+                      'TERMS OF USE',
                       style: GoogleFonts.rubikMonoOne(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

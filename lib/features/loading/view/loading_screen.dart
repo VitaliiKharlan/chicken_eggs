@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
-
 import '../widgets/flame_progress_bar.dart';
 
 @RoutePage()
