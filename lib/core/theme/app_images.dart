@@ -5,7 +5,12 @@ abstract class AppImages {
 
   /// images for LoadingScreen
   static const backgroundLoading = '${_basePath}background_loading.png';
-  static const backgroundLoading_1 = '${_basePath}background_loading_1.png';
   static const chickenMale = '${_basePath}chicken_male.png';
-  static const test = '${_basePath}icon_welcome_google.png';
+
+
+  /// images for MenuScreen
+  static const menuButton = '${_basePath}menu_button.png';
+  static const bringBack = '${_basePath}bring_back.png';
+  static const backButton = '${_basePath}back_button.png';
+  static const coin = '${_basePath}coin.png';
 }
