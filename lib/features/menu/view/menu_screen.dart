@@ -87,7 +87,9 @@ class MenuScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 12),
-                    MenuButtonWidget(text: 'PROFILE', onPressed: () {}),
+                    MenuButtonWidget(text: 'PROFILE', onPressed: () {
+                      context.router.push(const ProfileRoute());
+                    }),
                     const SizedBox(height: 12),
                     MenuButtonWidget(text: 'SETTINGS', onPressed: () {}),
                     const SizedBox(height: 12),

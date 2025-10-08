@@ -5,6 +5,6 @@ abstract class AppSvgImages {
 
   /// images for LoadingScreen
   static const backgroundLoading = '${_basePath}background_loading.svg';
-  static const chickenMale = '${_basePath}chicken_male.svg';
+  static const iconEdit = '${_basePath}icon_edit.svg';
   static const test = '${_basePath}icon_welcome_google.svg';
 }

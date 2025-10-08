@@ -16,7 +16,7 @@ class LeaderboardListWidget extends StatelessWidget {
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
-        final rank = index + 1;
+        // final rank = index + 1;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 1),
           child: SizedBox(
@@ -31,7 +31,7 @@ class LeaderboardListWidget extends StatelessWidget {
                   child: Container(
                     height: 52,
                     decoration: BoxDecoration(
-                      color: item.isCurrentUser ? Colors.amber : Color(0xFFFF89E2),
+                      color: item.isCurrentUser ? Colors.amber : Color(0xFFFF6CD8),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -51,7 +51,7 @@ class LeaderboardListWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 24),
                           child: Text(
-                            '${item.score}',
+                            item.score.toString().padLeft(4, '0'),
                             style: GoogleFonts.rubikMonoOne(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

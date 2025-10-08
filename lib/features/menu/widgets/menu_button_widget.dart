@@ -5,30 +5,38 @@ import 'package:google_fonts/google_fonts.dart';
 class MenuButtonWidget extends StatelessWidget {
   final String text;
   final double fontSize;
+  final double? height;
+  final double? width;
   final VoidCallback onPressed;
 
   const MenuButtonWidget({
     super.key,
     required this.text,
     this.fontSize = 22,
+    this.height,
+    this.width,
     required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
+    final buttonWidth = width ?? 180;
+    final buttonHeight = height ?? 80;
     return GestureDetector(
       onTap: onPressed,
       child: SizedBox(
-        width: 180,
-        height: 80,
+        height: buttonHeight,
+        width: buttonWidth,
+
         child: Stack(
           alignment: Alignment.center,
           children: [
             Image.asset(
               AppImages.menuButton,
               fit: BoxFit.fill,
-              width: 180,
-              height: 80,
+              height: buttonHeight,
+              width: buttonWidth,
+
             ),
             Text(
               text,
