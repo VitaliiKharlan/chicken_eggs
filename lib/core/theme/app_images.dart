@@ -13,4 +13,8 @@ abstract class AppImages {
   static const bringBack = '${_basePath}bring_back.png';
   static const backButton = '${_basePath}back_button.png';
   static const coin = '${_basePath}coin.png';
+
+  /// images for LeaderboardScreen
+  static const leaderboardButton = '${_basePath}leaderboard_button.png';
+
 }

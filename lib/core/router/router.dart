@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 
 import '../../features/game/view/game_screen.dart';
 import '../../features/info/view/how_to_play_screen.dart';
-import '../../features/leader/view/leader_screen.dart';
+import '../../features/leaderboard/view/leaderboard_screen.dart';
 import '../../features/level/view/level_screen.dart';
 import '../../features/loading/view/loading_screen.dart';
 import '../../features/menu/view/menu_screen.dart';
@@ -23,7 +23,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ProfileRoute.page, path: '/profile'),
     AutoRoute(page: SettingsRoute.page, path: '/settings'),
     AutoRoute(page: LevelRoute.page, path: '/level'),
-    AutoRoute(page: LeaderRoute.page, path: '/leader'),
+    AutoRoute(page: LeaderboardRoute.page, path: '/leaderboard'),
     AutoRoute(page: ShopRoute.page, path: '/shop'),
     AutoRoute(page: HowToPlayRoute.page, path: '/how_to_play'),
     AutoRoute(page: GameRoute.page, path: '/game'),

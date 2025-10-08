@@ -43,17 +43,17 @@ class HowToPlayRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [LeaderScreen]
-class LeaderRoute extends PageRouteInfo<void> {
-  const LeaderRoute({List<PageRouteInfo>? children})
-    : super(LeaderRoute.name, initialChildren: children);
+/// [LeaderboardScreen]
+class LeaderboardRoute extends PageRouteInfo<void> {
+  const LeaderboardRoute({List<PageRouteInfo>? children})
+    : super(LeaderboardRoute.name, initialChildren: children);
 
-  static const String name = 'LeaderRoute';
+  static const String name = 'LeaderboardRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LeaderScreen();
+      return const LeaderboardScreen();
     },
   );
 }

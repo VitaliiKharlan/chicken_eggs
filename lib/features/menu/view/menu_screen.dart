@@ -94,7 +94,9 @@ class MenuScreen extends StatelessWidget {
                     MenuButtonWidget(
                       text: 'LEADERBOARD',
                       fontSize: 16,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.router.push(const LeaderboardRoute());
+                      },
                     ),
                     const SizedBox(height: 12),
                     MenuButtonWidget(
