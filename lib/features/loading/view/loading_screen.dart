@@ -81,7 +81,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 right: 0,
                 child: Image.asset(
                   AppImages.chickenMale,
-                  // width: 240,
                   height: 800,
                   fit: BoxFit.fill,
                   alignment: Alignment.bottomCenter,

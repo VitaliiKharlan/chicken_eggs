@@ -1,14 +1,8 @@
-
 import 'package:chicken_eggs/core/theme/app_images.dart';
 import 'package:flutter/material.dart';
 
 class BringBackButtonWidget extends StatelessWidget {
-  // final VoidCallback onPressed;
-
-  const BringBackButtonWidget({
-    super.key,
-    // required this.onPressed,
-  });
+  const BringBackButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

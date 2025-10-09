@@ -38,7 +38,7 @@ class CoinCounterWidget extends StatelessWidget {
           ),
         ),
         Positioned(
-          right: 0, // подберите чтобы визуально было как у вас
+          right: 0,
           child: Image.asset(
             AppImages.coin,
             width: 56,

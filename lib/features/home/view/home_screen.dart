@@ -1,18 +1,15 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chicken_eggs/features/home/widgets/info_button_widget.dart';
+import 'package:chicken_eggs/features/home/widgets/menu_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
-import '../../../core/widgets/coin_counter_widget.dart';
-import '../widgets/change_level_grid_widget.dart';
+import '../widgets/action_button_widget.dart';
 
 @RoutePage()
-class LevelScreen extends StatelessWidget {
-  const LevelScreen({super.key});
-
-  final int coins = 1000;
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,39 +36,47 @@ class LevelScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    child: BringBackButtonWidget(),
+                    child: InfoButtonWidget(),
+                    onTap: () {
+                      context.router.replace(const HowToPlayRoute());
+                    },
+                  ),
+                  InkWell(
+                    child: MenuButtonWidget(),
                     onTap: () {
                       context.router.replace(const MenuRoute());
                     },
                   ),
-                  // context.router.push(const HowToPlayRoute());
-                  CoinCounterWidget(coins: coins),
                 ],
               ),
             ),
           ),
 
           Positioned(
-            top: 150,
-            left: 32,
+            bottom: 108,
+            left: 64,
             right: 32,
-            child: Text(
-              'CHANGE LEVEL',
-              style: GoogleFonts.rubikMonoOne(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+            child: Image.asset(
+              AppImages.chickenMale,
+
+              height: 648,
+              fit: BoxFit.fill,
+              alignment: Alignment.bottomCenter,
             ),
           ),
-
           Positioned(
-            top: 320,
-            left: 32,
-            right: 32,
-            child: ChangeLevelGridWidget(),
+            bottom: 72,
+            left: 40,
+            right: 40,
+            child: ActionButtonWidget(
+              iconAsset: AppImages.actionPlay,
+              height: 164,
+              width: 256,
+              iconSize: 180,
+              onPressed: () {
+                context.router.replace(const GameRoute());
+              },
+            ),
           ),
         ],
       ),

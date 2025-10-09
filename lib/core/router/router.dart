@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
 import '../../features/game/view/game_screen.dart';
+import '../../features/home/view/home_screen.dart';
 import '../../features/info/view/how_to_play_screen.dart';
 import '../../features/leaderboard/view/leaderboard_screen.dart';
 import '../../features/level/view/level_screen.dart';
@@ -20,6 +21,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(page: LoadingRoute.page, path: '/', initial: true),
     AutoRoute(page: MenuRoute.page, path: '/menu'),
+    AutoRoute(page: HomeRoute.page, path: '/home'),
     AutoRoute(page: ProfileRoute.page, path: '/profile'),
     AutoRoute(page: SettingsRoute.page, path: '/settings'),
     AutoRoute(page: LevelRoute.page, path: '/level'),

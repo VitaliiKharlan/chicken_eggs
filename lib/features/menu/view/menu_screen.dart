@@ -106,12 +106,12 @@ class MenuScreen extends StatelessWidget {
                     MenuButtonWidget(
                       text: 'PRIVACY \nPOLICY',
                       onPressed: () {
-                        context.router.replace(const PrivacyPolicyRoute());
+                        context.router.push(const HomeRoute());
                       },
                     ),
                     const SizedBox(height: 12),
                     MenuButtonWidget(text: 'TERM \nOF USE', onPressed: () {
-                      context.router.push(const TermsOfUseRoute());
+                      context.router.push(const LevelRoute());
                     }),
                     const SizedBox(height: 12),
                   ],
