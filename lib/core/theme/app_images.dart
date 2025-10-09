@@ -28,6 +28,7 @@ abstract class AppImages {
 
   /// images for GameScreen
   static const backgroundGame = '${_basePath}background_game.png';
+  static const chickenFemale = '${_basePath}chicken_female.png';
 
   /// images for ActionButton
   static const actionPlay = '${_basePath}action_play.png';

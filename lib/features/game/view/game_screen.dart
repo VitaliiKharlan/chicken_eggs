@@ -1,16 +1,37 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/coin_counter_widget.dart';
+import '../chicken_game.dart';
+import '../game_bloc/game_bloc.dart';
+import '../game_bloc/game_event.dart';
+import '../game_bloc/game_state.dart';
 import '../widgets/pause_button_widget.dart';
+import '../widgets/pause_overlay_widget.dart';
+import '../widgets/score_display_widget.dart';
 
 @RoutePage()
-class GameScreen extends StatelessWidget {
+class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  late final ChickenGame game;
   final int coins = 1000;
+
+  @override
+  void initState() {
+    super.initState();
+
+    game = ChickenGame(context.read<GameBloc>());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +48,47 @@ class GameScreen extends StatelessWidget {
             ),
           ),
 
+          Positioned.fill(
+            child: GameWidget<ChickenGame>.controlled(
+              gameFactory: () => game,
+              overlayBuilderMap: {
+                'PauseMenu': (ctx, game) => PauseOverlayWidget(game: game),
+                'ScoreDisplay': (ctx, game) => ScoreDisplayWidget(game: game),
+              },
+            ),
+          ),
+          Positioned(
+            top: 100,
+            left: 20,
+            child: BlocBuilder<GameBloc, GameState>(
+              builder: (context, state) {
+                if (state is GameRunning) {
+                  return Row(
+                    children: [
+                      Center(
+                        child: Icon(
+                          Icons.favorite,
+                          size: 48,
+                          color: Colors.red,
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        '${state.missedEggsCount}',
+                        style: GoogleFonts.rubikMonoOne(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ),
           Positioned(
             top: 40,
             left: 12,
@@ -44,7 +106,9 @@ class GameScreen extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        context.router.replace(const MenuRoute());
+                        game.pause();
+                        context.read<GameBloc>().add(PausePressed());
+                        game.overlays.add('PauseMenu');
                       },
                       child: const PauseButtonWidget(),
                     ),
