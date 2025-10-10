@@ -72,9 +72,29 @@ class HowToPlayScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 120),
+                    const SizedBox(height: 40),
                     Text(
-                      'TEXT',
+                      'Move the chicken left and right and catch the eggs falling from above.',
+                      style: GoogleFonts.rubikMonoOne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'If three eggs fall, the game ends – you lose.',
+                      style: GoogleFonts.rubikMonoOne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'If fewer than three eggs out of 10 fall, you win.',
                       style: GoogleFonts.rubikMonoOne(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

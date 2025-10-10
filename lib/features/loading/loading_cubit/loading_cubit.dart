@@ -36,7 +36,7 @@ class LoadingCubit extends Cubit<LoadingState> {
 
     for (final stage in stages) {
       final target = (progress + stage.progressWeight).clamp(0.0, 1.0);
-      final durationMs = 500 + _random.nextInt(501);
+      final durationMs = 250 + _random.nextInt(251);
       final stepDuration = Duration(milliseconds: durationMs);
       final startTime = DateTime.now();
 
@@ -57,7 +57,7 @@ class LoadingCubit extends Cubit<LoadingState> {
 
 
     final pauseDuration =
-    Duration(milliseconds: 100 + _random.nextInt(101));
+    Duration(milliseconds: 50 + _random.nextInt(51));
     await Future.delayed(pauseDuration);
   }
 

@@ -10,6 +10,7 @@ import '../chicken_game.dart';
 import '../game_bloc/game_bloc.dart';
 import '../game_bloc/game_event.dart';
 import '../game_bloc/game_state.dart';
+import '../widgets/lose_overlay_widget.dart';
 import '../widgets/pause_button_widget.dart';
 import '../widgets/pause_overlay_widget.dart';
 import '../widgets/score_display_widget.dart';
@@ -29,7 +30,6 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-
     game = ChickenGame(context.read<GameBloc>());
   }
 
@@ -52,13 +52,14 @@ class _GameScreenState extends State<GameScreen> {
             child: GameWidget<ChickenGame>.controlled(
               gameFactory: () => game,
               overlayBuilderMap: {
-                'PauseMenu': (ctx, game) => PauseOverlayWidget(game: game),
                 'ScoreDisplay': (ctx, game) => ScoreDisplayWidget(game: game),
+                'PauseMenu': (ctx, game) => PauseOverlayWidget(game: game),
+
               },
             ),
           ),
           Positioned(
-            top: 100,
+            top: 20,
             left: 20,
             child: BlocBuilder<GameBloc, GameState>(
               builder: (context, state) {
@@ -69,7 +70,7 @@ class _GameScreenState extends State<GameScreen> {
                         child: Icon(
                           Icons.favorite,
                           size: 48,
-                          color: Colors.red,
+                          color: Color(0xFFFF0000),
                         ),
                       ),
                       SizedBox(width: 4),
@@ -78,7 +79,7 @@ class _GameScreenState extends State<GameScreen> {
                         style: GoogleFonts.rubikMonoOne(
                           fontSize: 30,
                           fontWeight: FontWeight.w400,
-                          color: Colors.red,
+                          color: Color(0xFFFF0000),
                         ),
                       ),
                     ],
@@ -116,6 +117,23 @@ class _GameScreenState extends State<GameScreen> {
                 ],
               ),
             ),
+          ),
+          BlocListener<GameBloc, GameState>(
+            listener: (context, state) {
+              if (state is GameOver) {
+                game.pause();
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => LoseOverlayWidget(
+                    game: game,
+                    score: state.score,
+                    // bestScore: state.score,
+                  ),
+                );
+              }
+            },
+            child: const SizedBox.shrink(),
           ),
         ],
       ),

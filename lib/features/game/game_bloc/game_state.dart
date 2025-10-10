@@ -18,7 +18,7 @@ class GameRunning extends GameState {
     required this.paused,
     this.multiplier = 1,
     this.showMissedIcon = false,
-    this.missedEggsCount = 0,
+    this.missedEggsCount = 3,
   });
 
   GameRunning copyWith({

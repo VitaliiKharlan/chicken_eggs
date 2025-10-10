@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 
 class Egg extends SpriteComponent {
-  final int value; // 1–10
-  final int? multiplier; // например, 2, 3 или null
+  final int value;
+  final int? multiplier;
 
   Egg({
     required Sprite sprite,

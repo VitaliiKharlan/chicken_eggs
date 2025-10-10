@@ -81,7 +81,7 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
 
   @override
   void update(double dt) {
-    if (isPaused) return; // ⬅️ пропускаем обновления при паузе
+    if (isPaused) return;
     super.update(dt);
 
     for (final component in children.whereType<Egg>()) {

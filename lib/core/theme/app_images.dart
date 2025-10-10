@@ -32,7 +32,7 @@ abstract class AppImages {
 
   /// images for ActionButton
   static const actionPlay = '${_basePath}action_play.png';
-
+  static const actionTryAgain = '${_basePath}action_try_again.png';
 
   /// images for RectangleButton
   static const pauseButton = '${_basePath}pause_button.png';

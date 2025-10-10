@@ -7,7 +7,7 @@ import 'game_event.dart';
 import 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  int missedEggsCount = 0;
+  int missedEggsCount = 3;
 
   GameBloc()
     : super(GameRunning(score: 0, eggs: [], chickenX: 0.0, paused: false)) {
@@ -31,9 +31,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (!state.eggs.contains(event.egg)) return;
 
     final newEggs = List<Egg>.from(state.eggs)..remove(event.egg);
-    final newMissedCount = state.missedEggsCount + 1;
 
-    if (newMissedCount >= 3) {
+    final newMissedCount =
+        (state.missedEggsCount > 0) ? state.missedEggsCount - 1 : 0;
+
+    if (newMissedCount == 0) {
       emit(GameOver(score: state.score));
       return;
     }

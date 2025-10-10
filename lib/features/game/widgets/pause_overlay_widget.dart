@@ -20,7 +20,6 @@ class PauseOverlayWidget extends StatelessWidget {
     return Container(
       color: Colors.black54,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 348),
           Text(
@@ -68,7 +67,6 @@ class PauseOverlayWidget extends StatelessWidget {
                 ),
                 child: const Text('RESTART'),
               ),
-
             ],
           ),
           SizedBox(height: 92),
