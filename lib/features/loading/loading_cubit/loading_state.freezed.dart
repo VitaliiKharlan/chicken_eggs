@@ -125,11 +125,11 @@ return completed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  inProgress,TResult Function()?  completed,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( double progress)?  inProgress,TResult Function()?  completed,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadingInitial() when initial != null:
 return initial();case LoadingInProgress() when inProgress != null:
-return inProgress();case LoadingCompleted() when completed != null:
+return inProgress(_that.progress);case LoadingCompleted() when completed != null:
 return completed();case _:
   return orElse();
 
@@ -148,11 +148,11 @@ return completed();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  inProgress,required TResult Function()  completed,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( double progress)  inProgress,required TResult Function()  completed,}) {final _that = this;
 switch (_that) {
 case LoadingInitial():
 return initial();case LoadingInProgress():
-return inProgress();case LoadingCompleted():
+return inProgress(_that.progress);case LoadingCompleted():
 return completed();case _:
   throw StateError('Unexpected subclass');
 
@@ -170,11 +170,11 @@ return completed();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  inProgress,TResult? Function()?  completed,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( double progress)?  inProgress,TResult? Function()?  completed,}) {final _that = this;
 switch (_that) {
 case LoadingInitial() when initial != null:
 return initial();case LoadingInProgress() when inProgress != null:
-return inProgress();case LoadingCompleted() when completed != null:
+return inProgress(_that.progress);case LoadingCompleted() when completed != null:
 return completed();case _:
   return null;
 
@@ -219,33 +219,67 @@ String toString() {
 
 
 class LoadingInProgress implements LoadingState {
-  const LoadingInProgress();
+  const LoadingInProgress(this.progress);
   
 
+ final  double progress;
 
-
+/// Create a copy of LoadingState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LoadingInProgressCopyWith<LoadingInProgress> get copyWith => _$LoadingInProgressCopyWithImpl<LoadingInProgress>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadingInProgress);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadingInProgress&&(identical(other.progress, progress) || other.progress == progress));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,progress);
 
 @override
 String toString() {
-  return 'LoadingState.inProgress()';
+  return 'LoadingState.inProgress(progress: $progress)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $LoadingInProgressCopyWith<$Res> implements $LoadingStateCopyWith<$Res> {
+  factory $LoadingInProgressCopyWith(LoadingInProgress value, $Res Function(LoadingInProgress) _then) = _$LoadingInProgressCopyWithImpl;
+@useResult
+$Res call({
+ double progress
+});
 
 
+
+
+}
+/// @nodoc
+class _$LoadingInProgressCopyWithImpl<$Res>
+    implements $LoadingInProgressCopyWith<$Res> {
+  _$LoadingInProgressCopyWithImpl(this._self, this._then);
+
+  final LoadingInProgress _self;
+  final $Res Function(LoadingInProgress) _then;
+
+/// Create a copy of LoadingState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? progress = null,}) {
+  return _then(LoadingInProgress(
+null == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

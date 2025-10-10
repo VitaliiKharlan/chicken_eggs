@@ -90,7 +90,18 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 bottom: 88,
                 left: 36,
                 right: 36,
-                child: FlameProgressBar(progress: 0.85),
+                child: BlocBuilder<LoadingCubit, LoadingState>(
+                  builder: (context, state) {
+                    double progress = 0;
+                    if (state is LoadingInProgress) {
+                      progress = state.progress;
+                    } else if (state is LoadingCompleted) {
+                      progress = 1.0;
+                    }
+
+                    return FlameProgressBar(progress: progress);
+                  },
+                ),
               ),
             ],
           ),
