@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:chicken_eggs/core/theme/app_images.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +11,32 @@ import '../../../core/widgets/coin_counter_widget.dart';
 import '../widgets/menu_button_widget.dart';
 
 @RoutePage()
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
   final int coins = 1000;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +44,41 @@ class MenuScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppImages.backgroundLoading),
-                fit: BoxFit.fill,
-              ),
-            ),
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              int alphaValue =
+                  ((0.2 + 0.4 * sin(_controller.value * 2 * pi)).clamp(
+                            0.0,
+                            1.0,
+                          ) *
+                          255)
+                      .round();
+
+              return ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.transparent,
+                      Colors.orange.withAlpha(alphaValue),
+                      Colors.transparent,
+                    ],
+                    stops: [0.0, 0.5, 1.0],
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.srcATop,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(AppImages.backgroundLoading),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
 
           Positioned(
@@ -45,7 +97,6 @@ class MenuScreen extends StatelessWidget {
                     },
                   ),
 
-                  // context.router.push(const HowToPlayRoute());
                   CoinCounterWidget(coins: coins),
                 ],
               ),
@@ -87,13 +138,19 @@ class MenuScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 12),
-                    MenuButtonWidget(text: 'PROFILE', onPressed: () {
-                      context.router.push(const ProfileRoute());
-                    }),
+                    MenuButtonWidget(
+                      text: 'PROFILE',
+                      onPressed: () {
+                        context.router.push(const ProfileRoute());
+                      },
+                    ),
                     const SizedBox(height: 12),
-                    MenuButtonWidget(text: 'SETTINGS', onPressed: () {
-                      context.router.push(const SettingsRoute());
-                    }),
+                    MenuButtonWidget(
+                      text: 'SETTINGS',
+                      onPressed: () {
+                        context.router.push(const SettingsRoute());
+                      },
+                    ),
                     const SizedBox(height: 12),
                     MenuButtonWidget(
                       text: 'LEADERBOARD',
@@ -110,9 +167,12 @@ class MenuScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 12),
-                    MenuButtonWidget(text: 'TERM \nOF USE', onPressed: () {
-                      context.router.push(const LevelRoute());
-                    }),
+                    MenuButtonWidget(
+                      text: 'TERM \nOF USE',
+                      onPressed: () {
+                        context.router.push(const LevelRoute());
+                      },
+                    ),
                     const SizedBox(height: 12),
                   ],
                 ),

@@ -1,59 +1,28 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/router/router.dart';
+import '../../../core/services/local_storage_service.dart';
 import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/bring_back_button_widget.dart';
 import '../../menu/widgets/menu_button_widget.dart';
-
+import '../widgets/custom_snack_bar_widget.dart';
 import '../widgets/switch_with_prefs_widget.dart';
 
 @RoutePage()
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool soundEnabled = false;
-  bool vibrationEnabled = false;
-  bool notificationsEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSwitches();
-  }
-
-  Future<void> _loadSwitches() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      soundEnabled = prefs.getBool('sound_enabled') ?? false;
-      vibrationEnabled = prefs.getBool('vibration_enabled') ?? false;
-      notificationsEnabled = prefs.getBool('notifications_enabled') ?? false;
-    });
-  }
-
-  Future<void> _saveSwitches() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('sound_enabled', soundEnabled);
-    await prefs.setBool('vibration_enabled', vibrationEnabled);
-    await prefs.setBool('notifications_enabled', notificationsEnabled);
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Settings saved')));
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final storage = LocalStorageService();
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          // Фон
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -63,6 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
 
+          // Кнопка "назад"
           Positioned(
             top: 40,
             left: 12,
@@ -106,16 +76,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   const SizedBox(height: 48),
-                  SwitchWithPrefsWidget(title: "SOUND", prefsKey: "sound_pref"),
-                  SizedBox(height: 24),
+
                   SwitchWithPrefsWidget(
-                    title: "NOTIFICATION",
-                    prefsKey: "notifications_pref",
+                    title: "SOUND",
+                    initialValue: storage.soundEnabled,
+                    onChanged: (val) => storage.soundEnabled = val,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
+                  SwitchWithPrefsWidget(
+                    title: "NOTIFICATIONS",
+                    initialValue: storage.notificationsEnabled,
+                    onChanged: (val) => storage.notificationsEnabled = val,
+                  ),
+                  const SizedBox(height: 24),
                   SwitchWithPrefsWidget(
                     title: "VIBRATION",
-                    prefsKey: "vibration_pref",
+                    initialValue: storage.vibrationEnabled,
+                    onChanged: (val) => storage.vibrationEnabled = val,
                   ),
                 ],
               ),
@@ -131,7 +108,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               fontSize: 40,
               height: 140,
               width: 248,
-              onPressed: _saveSwitches,
+              onPressed: () {
+                CustomSnackBar.show(context, 'Settings saved');
+              },
             ),
           ),
         ],

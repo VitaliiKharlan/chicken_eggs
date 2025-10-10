@@ -1,18 +1,49 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chicken_eggs/core/theme/app_svg_images.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/router/router.dart';
+import '../../../core/services/local_storage_service.dart';
 import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/bring_back_button_widget.dart';
 import '../../menu/widgets/menu_button_widget.dart';
+import '../widgets/avater_picker_widget.dart';
 import '../widgets/show_profile_choice_dialog.dart';
 
 @RoutePage()
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final storage = LocalStorageService();
+
+  late TextEditingController usernameController;
+  late TextEditingController emailController;
+  late String selectedAvatar;
+
+  bool isEditingUsername = false;
+  bool isEditingEmail = false;
+
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController(text: storage.playerName);
+    emailController = TextEditingController(text: storage.playerEmail);
+    selectedAvatar = storage.playerAvatar;
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,33 +119,15 @@ class ProfileScreen extends StatelessWidget {
                               width: 132,
                             ),
                             Positioned(
-                              bottom: -8,
-                              left: 0,
-                              right: 0,
-                              child: Center(
-                                child: Container(
-                                  height: 32,
-                                  width: 32,
-                                  decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xFF1BC440),
-                                        Color(0xFF43B805),
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    ),
-                                    color: Color(0xFFFF6CD8),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      AppSvgImages.iconEdit,
-                                      height: 18,
-                                      width: 18,
-                                    ),
-                                  ),
-                                ),
+                              left: 4,
+                              right: 4,
+                              child: AvatarPickerWidget(
+                                currentAvatar: selectedAvatar,
+                                onAvatarChanged: (newAvatar) {
+                                  setState(() {
+                                    selectedAvatar = newAvatar;
+                                  });
+                                },
                               ),
                             ),
                           ],
@@ -133,23 +146,45 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
-                              'USERNAME',
+                            child: TextField(
+                              controller: usernameController,
+                              readOnly: !isEditingUsername,
                               style: GoogleFonts.rubikMonoOne(
                                 color: Color(0xFFFFFFFF),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 letterSpacing: 1,
                               ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0xFFFF6CD8),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide.none,
+                                ),
+                                hintText: 'USERNAME',
+                                hintStyle: GoogleFonts.rubikMonoOne(
+                                  color: Color(0x8AFFFFFF),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(right: 12),
-                            child: SvgPicture.asset(
-                              AppSvgImages.iconEdit,
-                              height: 18,
-                              width: 18,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isEditingUsername = true;
+                                });
+                              },
+                              child: SvgPicture.asset(
+                                AppSvgImages.iconEdit,
+                                height: 18,
+                                width: 18,
+                              ),
                             ),
                           ),
                         ],
@@ -166,23 +201,45 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
-                              'EMAIL',
+                            child: TextField(
+                              controller: emailController,
+                              readOnly: !isEditingEmail,
                               style: GoogleFonts.rubikMonoOne(
                                 color: Color(0xFFFFFFFF),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 14,
                                 letterSpacing: 1,
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0xFFFF6CD8),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide.none,
+                                ),
+                                hintText: 'EMAIL',
+                                hintStyle: GoogleFonts.rubikMonoOne(
+                                  color: Color(0x8AFFFFFF),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(right: 12),
-                            child: SvgPicture.asset(
-                              AppSvgImages.iconEdit,
-                              height: 18,
-                              width: 18,
+                            child: InkWell(
+                              child: SvgPicture.asset(
+                                AppSvgImages.iconEdit,
+                                height: 18,
+                                width: 18,
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  isEditingEmail = true;
+                                });
+                              },
                             ),
                           ),
                         ],
@@ -204,6 +261,9 @@ class ProfileScreen extends StatelessWidget {
               height: 120,
               width: 240,
               onPressed: () {
+                storage.playerAvatar = selectedAvatar;
+                storage.playerName = usernameController.text.trim();
+                storage.playerEmail = emailController.text.trim();
                 showProfileChoiceDialog(context);
               },
             ),
