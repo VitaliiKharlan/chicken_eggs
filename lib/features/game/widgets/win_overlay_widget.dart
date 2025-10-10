@@ -1,18 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chicken_eggs/core/router/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/app_images.dart';
 import '../../home/widgets/action_button_widget.dart';
 import '../chicken_game.dart';
+import '../game_bloc/game_bloc.dart';
+import '../game_bloc/game_event.dart';
 
-class LoseOverlayWidget extends StatelessWidget {
+class WinOverlayWidget extends StatelessWidget {
   final ChickenGame game;
   final int score;
   // final int bestScore;
 
-  const LoseOverlayWidget({
+  const WinOverlayWidget({
     super.key,
     required this.game,
     required this.score,
@@ -40,7 +43,7 @@ class LoseOverlayWidget extends StatelessWidget {
                 children: [
                   const SizedBox(height: 212),
                   Text(
-                    'YOU LOSE!',
+                    'YOU WIN!',
                     style: GoogleFonts.rubikMonoOne(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
@@ -90,26 +93,48 @@ class LoseOverlayWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 24),
-            
-                  TextButton(
-                    onPressed: () {
-                      context.router.replace(HomeRoute());
-                    },
-                    style: TextButton.styleFrom(
-                      textStyle: GoogleFonts.rubikMonoOne(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        decoration: TextDecoration.underline,
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context.router.replace(HomeRoute());
+                        },
+                        style: TextButton.styleFrom(
+                          textStyle: GoogleFonts.rubikMonoOne(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            decoration: TextDecoration.underline,
+                          ),
+                          foregroundColor: Color(0xFFFFFFFF),
+                        ),
+                        child: const Text('HOME'),
                       ),
-                      foregroundColor: Color(0xFFFFFFFF),
-                    ),
-                    child: const Text('HOME'),
+                      const SizedBox(width: 20),
+                      TextButton(
+                        onPressed: () {
+                          context.read<GameBloc>().add(RestartPressed());
+                          game.overlays.remove('PauseMenu');
+                        },
+                        style: TextButton.styleFrom(
+                          textStyle: GoogleFonts.rubikMonoOne(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            decoration: TextDecoration.underline,
+                          ),
+                          foregroundColor: Color(0xFFFFFFFF),
+                        ),
+                        child: const Text('RESTART'),
+                      ),
+                    ],
                   ),
-            
+
                   SizedBox(height: 92),
                   ActionButtonWidget(
-                    iconAsset: AppImages.actionTryAgain,
+                    iconAsset: AppImages.actionNext,
                     height: 164,
                     width: 256,
                     iconSize: 180,

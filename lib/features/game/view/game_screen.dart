@@ -14,6 +14,7 @@ import '../widgets/lose_overlay_widget.dart';
 import '../widgets/pause_button_widget.dart';
 import '../widgets/pause_overlay_widget.dart';
 import '../widgets/score_display_widget.dart';
+import '../widgets/win_overlay_widget.dart';
 
 @RoutePage()
 class GameScreen extends StatefulWidget {
@@ -128,7 +129,16 @@ class _GameScreenState extends State<GameScreen> {
                   builder: (_) => LoseOverlayWidget(
                     game: game,
                     score: state.score,
-                    // bestScore: state.score,
+                  ),
+                );
+              } else if (state is GameWon) {
+                game.pause();
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => WinOverlayWidget(
+                    game: game,
+                    score: state.score,
                   ),
                 );
               }
