@@ -9,8 +9,8 @@ import '../../../core/widgets/coin_counter_widget.dart';
 import '../widgets/change_level_grid_widget.dart';
 
 @RoutePage()
-class LevelScreen extends StatelessWidget {
-  const LevelScreen({super.key});
+class ChangeLevelScreen extends StatelessWidget {
+  const ChangeLevelScreen({super.key});
 
   final int coins = 1000;
 

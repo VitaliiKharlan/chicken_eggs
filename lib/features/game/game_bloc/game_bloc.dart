@@ -6,9 +6,8 @@ import '../components/egg.dart';
 import 'game_event.dart';
 import 'game_state.dart';
 
-
 class GameBloc extends Bloc<GameEvent, GameState> {
-  int totalDroppedEggs = 0; // <-- общее количество упавших яиц (всего)
+  int totalDroppedEggs = 0;
   static const int totalEggsToDrop = 5;
   int missedEggsCount = 3;
 
@@ -38,13 +37,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (!current.eggs.contains(event.egg)) return;
 
     final newEggs = List<Egg>.from(current.eggs)..remove(event.egg);
-    final newMissedCount = (current.missedEggsCount > 0) ? current.missedEggsCount - 1 : 0;
+    final newMissedCount =
+        (current.missedEggsCount > 0) ? current.missedEggsCount - 1 : 0;
 
-    emit(current.copyWith(
-      eggs: newEggs,
-      missedEggsCount: newMissedCount,
-      showMissedIcon: true,
-    ));
+    emit(
+      current.copyWith(
+        eggs: newEggs,
+        missedEggsCount: newMissedCount,
+        showMissedIcon: true,
+      ),
+    );
 
     await Future.delayed(const Duration(seconds: 1));
 

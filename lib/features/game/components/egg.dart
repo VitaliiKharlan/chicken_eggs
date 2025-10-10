@@ -1,5 +1,7 @@
 import 'package:flame/components.dart';
 
+import '../chicken_game.dart';
+
 class Egg extends SpriteComponent {
   final int value;
   final int? multiplier;
@@ -23,5 +25,13 @@ class Egg extends SpriteComponent {
       value: value ?? this.value,
       multiplier: multiplier ?? this.multiplier,
     );
+  }
+  @override
+  void update(double dt) {
+    super.update(dt);
+    // Проверим, что parent это ChickenGame (для доступа к isPaused)
+    if (parent is ChickenGame && !(parent as ChickenGame).isPaused) {
+      position.y += 150 * dt;
+    }
   }
 }

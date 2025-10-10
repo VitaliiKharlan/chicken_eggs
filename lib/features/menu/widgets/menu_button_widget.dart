@@ -12,7 +12,7 @@ class MenuButtonWidget extends StatelessWidget {
   const MenuButtonWidget({
     super.key,
     required this.text,
-    this.fontSize = 22,
+    this.fontSize = 21,
     this.height,
     this.width,
     required this.onPressed,
@@ -43,9 +43,22 @@ class MenuButtonWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               style: GoogleFonts.rubikMonoOne(
                 fontSize: fontSize,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 letterSpacing: 1.5,
-                color: Colors.white,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 1
+                  ..color = Color(0xFF8C0231),
+              ),
+            ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.rubikMonoOne(
+                fontSize: fontSize,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1.5,
+                color: Color(0xFFFFFFFF),
               ),
             ),
           ],

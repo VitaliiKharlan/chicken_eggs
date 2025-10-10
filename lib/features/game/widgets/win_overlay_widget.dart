@@ -139,7 +139,7 @@ class WinOverlayWidget extends StatelessWidget {
                     width: 256,
                     iconSize: 180,
                     onPressed: () {
-                      // context.router.replace(const GameRoute());
+                      context.router.replace(const ChangeLevelRoute());
                     },
                   ),
                 ],

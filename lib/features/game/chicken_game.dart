@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:async' as async;
 import 'dart:math';
 
 import 'package:flame/components.dart';
@@ -20,9 +20,12 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
   ChickenGame(this.bloc);
 
   bool isPaused = false;
+  async.Timer? _eggTimer;
 
   void pause() => isPaused = true;
   void resume() => isPaused = false;
+
+
 
   @override
   Future<void> onLoad() async {
@@ -42,18 +45,27 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
 
     eggSprites = [for (int i = 1; i <= 12; i++) await loadSprite('egg_$i.png')];
 
-    _startSpawningEggs();
+    _startEggTimer();
 
     overlays.add('ScoreDisplay');
   }
 
-  Future<void> _startSpawningEggs() async {
-    for (int i = 0; i < 5; i++) {
-      if (isRemoving) break;
-      _spawnSingleEgg();
-      await Future.delayed(const Duration(milliseconds: 1000));
-    }
+  void _startEggTimer() {
+    _eggTimer?.cancel();
+    _eggTimer = async.Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!isPaused) {
+        _spawnSingleEgg();
+      }
+    });
   }
+
+  // Future<void> _startSpawningEggs() async {
+  //   for (int i = 0; i < 5; i++) {
+  //     if (isRemoving) break;
+  //     _spawnSingleEgg();
+  //     await Future.delayed(const Duration(milliseconds: 1000));
+  //   }
+  // }
 
   void _spawnSingleEgg() {
     debugPrint('Egg spawned at ${DateTime.now()}');
@@ -81,12 +93,10 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
 
   @override
   void update(double dt) {
-    if (isPaused) return;
     super.update(dt);
 
-    for (final component in children.whereType<Egg>()) {
-      component.position.y += 150 * dt;
 
+    for (final component in children.whereType<Egg>()) {
       if (component.position.y > size.y) {
         remove(component);
         bloc.add(EggMissed(component));
@@ -120,5 +130,10 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
   void onTapDown(TapDownEvent event) {
     final tapX = event.localPosition.x;
     chicken?.moveTo(tapX);
+  }
+  @override
+  void onRemove() {
+    _eggTimer?.cancel();
+    super.onRemove();
   }
 }

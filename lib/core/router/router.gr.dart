@@ -11,6 +11,22 @@
 part of 'router.dart';
 
 /// generated route for
+/// [ChangeLevelScreen]
+class ChangeLevelRoute extends PageRouteInfo<void> {
+  const ChangeLevelRoute({List<PageRouteInfo>? children})
+    : super(ChangeLevelRoute.name, initialChildren: children);
+
+  static const String name = 'ChangeLevelRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ChangeLevelScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [GameScreen]
 class GameRoute extends PageRouteInfo<void> {
   const GameRoute({List<PageRouteInfo>? children})
@@ -70,22 +86,6 @@ class LeaderboardRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const LeaderboardScreen();
-    },
-  );
-}
-
-/// generated route for
-/// [LevelScreen]
-class LevelRoute extends PageRouteInfo<void> {
-  const LevelRoute({List<PageRouteInfo>? children})
-    : super(LevelRoute.name, initialChildren: children);
-
-  static const String name = 'LevelRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const LevelScreen();
     },
   );
 }

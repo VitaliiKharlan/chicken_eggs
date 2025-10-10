@@ -104,12 +104,12 @@ class _MenuScreenState extends State<MenuScreen>
           ),
 
           Positioned(
-            top: 150,
+            top: 180,
             left: 32,
             right: 32,
             child: Container(
               width: 300,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.only(left: 24, top: 0, right: 24,bottom: 12),
               decoration: BoxDecoration(
                 color: Color(0xCC7A025A),
                 borderRadius: BorderRadius.circular(12),
@@ -134,7 +134,7 @@ class _MenuScreenState extends State<MenuScreen>
                     MenuButtonWidget(
                       text: 'PlAY',
                       onPressed: () {
-                        context.router.replace(const HowToPlayRoute());
+                        context.router.replace(const GameRoute());
                       },
                     ),
                     const SizedBox(height: 12),
@@ -154,7 +154,7 @@ class _MenuScreenState extends State<MenuScreen>
                     const SizedBox(height: 12),
                     MenuButtonWidget(
                       text: 'LEADERBOARD',
-                      fontSize: 16,
+                      fontSize: 15,
                       onPressed: () {
                         context.router.push(const LeaderboardRoute());
                       },
@@ -163,14 +163,14 @@ class _MenuScreenState extends State<MenuScreen>
                     MenuButtonWidget(
                       text: 'PRIVACY \nPOLICY',
                       onPressed: () {
-                        context.router.push(const HomeRoute());
+                        context.router.push(const PrivacyPolicyRoute());
                       },
                     ),
                     const SizedBox(height: 12),
                     MenuButtonWidget(
                       text: 'TERM \nOF USE',
                       onPressed: () {
-                        context.router.push(const LevelRoute());
+                        context.router.push(const TermsOfUseRoute());
                       },
                     ),
                     const SizedBox(height: 12),
