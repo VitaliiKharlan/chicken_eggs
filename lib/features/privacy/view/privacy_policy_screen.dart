@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
+import '../../../core/theme/app_svg_images.dart';
+import '../../../core/widgets/system_button_widget.dart';
 
 @RoutePage()
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -35,7 +36,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    child: BringBackButtonWidget(),
+                    child: SystemButtonWidget(
+                      iconAsset: AppSvgImages.iconBack,
+                    ),
                     onTap: () {
                       context.router.replace(const MenuRoute());
                     },

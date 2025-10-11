@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/router/router.dart';
 import '../../../core/services/local_storage_service.dart';
 import '../../../core/theme/app_images.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
+import '../../../core/widgets/system_button_widget.dart';
 import '../../menu/widgets/menu_button_widget.dart';
 import '../widgets/avater_picker_widget.dart';
 import '../widgets/show_profile_choice_dialog.dart';
@@ -70,10 +70,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    child: BringBackButtonWidget(),
-                    onTap: () {
-                      context.router.replace(const MenuRoute());
-                    },
+                    child: SystemButtonWidget(
+                      iconAsset: AppSvgImages.iconBack,
+                      onPressed: () {
+                        context.router.push(const MenuRoute());
+                      },
+                    ),
+                    // onTap: () {
+                    //   context.router.replace(const MenuRoute());
+                    // },
                   ),
                 ],
               ),
@@ -114,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           clipBehavior: Clip.none,
                           children: [
                             Image.asset(
-                              AppImages.backButton,
+                              AppImages.systemButton,
                               height: 132,
                               width: 132,
                             ),

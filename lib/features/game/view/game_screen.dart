@@ -14,6 +14,7 @@ import '../widgets/lose_overlay_widget.dart';
 import '../widgets/pause_button_widget.dart';
 import '../widgets/pause_overlay_widget.dart';
 import '../widgets/score_display_widget.dart';
+import '../widgets/win_overlay_widget.dart';
 
 @RoutePage()
 class GameScreen extends StatefulWidget {
@@ -61,8 +62,8 @@ class _GameScreenState extends State<GameScreen> {
                 },
                 'WinOverlay': (ctx, game) {
                   final state = game.bloc.state;
-                  final score = state is GameOver ? state.score : 0;
-                  return LoseOverlayWidget(game: game, score: score);
+                  final score = state is GameWon ? state.score : 0;
+                  return WinOverlayWidget(game: game, score: score);
                 },
               },
             ),
@@ -134,10 +135,15 @@ class _GameScreenState extends State<GameScreen> {
                 if (!game.overlays.isActive('LoseOverlay')) {
                   game.overlays.add('LoseOverlay');
                 }
+              } else if (state is GameWon) {
+                game.pause();
+                if (!game.overlays.isActive('WinOverlay')) {
+                  game.overlays.add('WinOverlay');
+                }
               }
             },
             child: const SizedBox.shrink(),
-          )
+          ),
         ],
       ),
     );

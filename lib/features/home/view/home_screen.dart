@@ -38,13 +38,13 @@ class HomeScreen extends StatelessWidget {
                   InkWell(
                     child: InfoButtonWidget(),
                     onTap: () {
-                      context.router.replace(const HowToPlayRoute());
+                      context.router.push(const HowToPlayRoute());
                     },
                   ),
                   InkWell(
                     child: MenuButtonWidget(),
                     onTap: () {
-                      context.router.replace(const MenuRoute());
+                      context.router.push(const MenuRoute());
                     },
                   ),
                 ],

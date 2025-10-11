@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-
+import 'package:chicken_eggs/core/theme/app_svg_images.dart';
 import 'package:chicken_eggs/features/leaderboard/widgets/leaderboard_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
+import '../../../core/widgets/system_button_widget.dart';
 import '../data/leaderboard_mock_data.dart';
 
 
@@ -41,10 +41,15 @@ class LeaderboardScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    child: BringBackButtonWidget(),
-                    onTap: () {
-                      context.router.replace(const MenuRoute());
-                    },
+                    child: SystemButtonWidget(
+                      iconAsset: AppSvgImages.iconBack,
+                      onPressed: (){
+                        context.router.push(const MenuRoute());
+                      },
+                    ),
+                    // onTap: () {
+                    //   context.router.replace(const MenuRoute());
+                    // },
                   ),
                 ],
               ),

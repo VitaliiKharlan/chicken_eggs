@@ -39,8 +39,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (!current.eggs.contains(event.egg)) return;
 
     final newEggs = List<Egg>.from(current.eggs)..remove(event.egg);
-    final newMissedCount =
-    (current.missedEggsCount > 0) ? current.missedEggsCount - 1 : 0;
+    final newMissedCount = current.missedEggsCount > 0 ? current.missedEggsCount - 1 : 0;
 
     totalDroppedEggs++;
 
@@ -57,15 +56,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       emit(currentState.copyWith(showMissedIcon: false));
     }
 
-    // Проверяем поражение
-    if (newMissedCount == 0) {
-      emit(GameOver(score: current.score));
-      return;
-    }
-
-    // Проверяем победу, если все яйца уже упали
+    // Проверяем конец игры
     if (totalDroppedEggs >= totalEggsToDrop) {
-      emit(GameWon(score: current.score));
+      if (newMissedCount > 0) {
+        emit(GameWon(score: current.score));
+      } else {
+        emit(GameOver(score: current.score));
+      }
+    } else if (newMissedCount == 0) {
+      emit(GameOver(score: current.score));
     }
   }
 
@@ -76,17 +75,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     int eggScore = event.egg.value;
     if (event.egg.multiplier != null) eggScore *= event.egg.multiplier!;
 
-    final newEggs = List<Egg>.from(current.eggs)..remove(event.egg);
-    final newScore = current.score + eggScore;
-
     totalDroppedEggs++;
 
-    emit(current.copyWith(eggs: newEggs, score: newScore));
+    final newEggs = List<Egg>.from(current.eggs)..remove(event.egg);
+    final newScore = current.score + eggScore;
+    final newMissedCount = current.missedEggsCount;
 
-    // Проверяем победу — если пойманы все яйца и игра не окончена
-    if (totalDroppedEggs >= totalEggsToDrop &&
-        current.missedEggsCount > 0) {
-      emit(GameWon(score: newScore));
+    // Проверяем конец игры
+    if (totalDroppedEggs >= totalEggsToDrop) {
+      if (newMissedCount > 0) {
+        emit(GameWon(score: newScore));
+      } else {
+        emit(GameOver(score: newScore));
+      }
+    } else {
+      emit(current.copyWith(eggs: newEggs, score: newScore));
     }
   }
 

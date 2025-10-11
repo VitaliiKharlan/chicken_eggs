@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
 import '../../../core/widgets/coin_counter_widget.dart';
+import '../../../core/widgets/system_button_widget.dart';
 import '../widgets/change_level_grid_widget.dart';
 
 @RoutePage()
@@ -38,10 +38,10 @@ class ChangeLevelScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    child: BringBackButtonWidget(),
-                    onTap: () {
-                      context.router.replace(const MenuRoute());
+                  SystemButtonWidget(
+                    iconAsset: AppImages.bringBack,
+                    onPressed: () {
+                      context.router.push(MenuRoute());
                     },
                   ),
                   // context.router.push(const HowToPlayRoute());

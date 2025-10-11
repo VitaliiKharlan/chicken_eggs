@@ -2,12 +2,13 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:chicken_eggs/core/theme/app_images.dart';
+import 'package:chicken_eggs/core/theme/app_svg_images.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/router/router.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
 import '../../../core/widgets/coin_counter_widget.dart';
+import '../../../core/widgets/system_button_widget.dart';
 import '../widgets/menu_button_widget.dart';
 
 @RoutePage()
@@ -83,28 +84,31 @@ class _MenuScreenState extends State<MenuScreen>
 
           Positioned(
             top: 40,
-            left: 12,
-            right: 12,
+            left: 8,
+            right: 16,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    child: BringBackButtonWidget(),
-                    onTap: () {
-                      context.router.replace(const HowToPlayRoute());
+                  SystemButtonWidget(
+                    iconAsset: AppSvgImages.iconBack,
+                    onPressed: (){
+                      context.router.maybePop();
                     },
                   ),
 
-                  CoinCounterWidget(coins: coins),
+                  GestureDetector(child: CoinCounterWidget(coins: coins),
+                  onTap: () {
+                    context.router.push(const ShopRoute());
+                  },),
                 ],
               ),
             ),
           ),
 
           Positioned(
-            top: 180,
+            top: 200,
             left: 32,
             right: 32,
             child: Container(
@@ -131,13 +135,7 @@ class _MenuScreenState extends State<MenuScreen>
                     ),
 
                     const SizedBox(height: 24),
-                    MenuButtonWidget(
-                      text: 'PlAY',
-                      onPressed: () {
-                        context.router.replace(const GameRoute());
-                      },
-                    ),
-                    const SizedBox(height: 12),
+
                     MenuButtonWidget(
                       text: 'PROFILE',
                       onPressed: () {

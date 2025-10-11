@@ -1,18 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chicken_eggs/core/router/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/app_images.dart';
 import '../../home/widgets/action_button_widget.dart';
 import '../chicken_game.dart';
-import '../game_bloc/game_bloc.dart';
-import '../game_bloc/game_event.dart';
 
 class WinOverlayWidget extends StatelessWidget {
   final ChickenGame game;
   final int score;
+
   // final int bestScore;
 
   const WinOverlayWidget({
@@ -115,8 +113,8 @@ class WinOverlayWidget extends StatelessWidget {
                       const SizedBox(width: 20),
                       TextButton(
                         onPressed: () {
-                          context.read<GameBloc>().add(RestartPressed());
-                          game.overlays.remove('PauseMenu');
+                          game.overlays.remove('WinOverlay');
+                          game.restartGame();
                         },
                         style: TextButton.styleFrom(
                           textStyle: GoogleFonts.rubikMonoOne(

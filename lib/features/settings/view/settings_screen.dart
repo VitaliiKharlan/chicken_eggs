@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/router/router.dart';
 import '../../../core/services/local_storage_service.dart';
 import '../../../core/theme/app_images.dart';
-import '../../../core/widgets/bring_back_button_widget.dart';
+import '../../../core/widgets/system_button_widget.dart';
 import '../../menu/widgets/menu_button_widget.dart';
 import '../widgets/custom_snack_bar_widget.dart';
 import '../widgets/switch_with_prefs_widget.dart';
@@ -43,7 +43,9 @@ class SettingsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    child: BringBackButtonWidget(),
+                    child: SystemButtonWidget(
+                      iconAsset: AppImages.bringBack,
+                    ),
                     onTap: () => context.router.replace(const MenuRoute()),
                   ),
                 ],
