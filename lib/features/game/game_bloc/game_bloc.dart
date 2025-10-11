@@ -8,11 +8,11 @@ import 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   int totalDroppedEggs = 0;
-  static const int totalEggsToDrop = 5;
+  static const int totalEggsToDrop = 8;
   int missedEggsCount = 3;
 
   GameBloc()
-    : super(GameRunning(score: 0, eggs: [], chickenX: 0.0, paused: false)) {
+      : super(GameRunning(score: 0, eggs: [], chickenX: 0.0, paused: false)) {
     on<EggDropped>(_onEggDropped);
     on<EggMissed>(_onEggMissed);
     on<EggCaught>(_onEggCaught);
@@ -27,26 +27,28 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (state is! GameRunning) return;
     final current = state as GameRunning;
 
-    totalDroppedEggs++;
-    emit(current.copyWith(eggs: List.from(current.eggs)..add(event.egg)));
+
+    emit(current.copyWith(
+      eggs: List.from(current.eggs)..add(event.egg),
+    ));
   }
 
-  void _onEggMissed(EggMissed event, Emitter<GameState> emit) async {
+  Future<void> _onEggMissed(EggMissed event, Emitter<GameState> emit) async {
     if (state is! GameRunning) return;
     final current = state as GameRunning;
     if (!current.eggs.contains(event.egg)) return;
 
     final newEggs = List<Egg>.from(current.eggs)..remove(event.egg);
     final newMissedCount =
-        (current.missedEggsCount > 0) ? current.missedEggsCount - 1 : 0;
+    (current.missedEggsCount > 0) ? current.missedEggsCount - 1 : 0;
 
-    emit(
-      current.copyWith(
-        eggs: newEggs,
-        missedEggsCount: newMissedCount,
-        showMissedIcon: true,
-      ),
-    );
+    totalDroppedEggs++;
+
+    emit(current.copyWith(
+      eggs: newEggs,
+      missedEggsCount: newMissedCount,
+      showMissedIcon: true,
+    ));
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -55,12 +57,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       emit(currentState.copyWith(showMissedIcon: false));
     }
 
+    // Проверяем поражение
     if (newMissedCount == 0) {
       emit(GameOver(score: current.score));
       return;
     }
 
-    if (totalDroppedEggs >= totalEggsToDrop && newMissedCount < 3) {
+    // Проверяем победу, если все яйца уже упали
+    if (totalDroppedEggs >= totalEggsToDrop) {
       emit(GameWon(score: current.score));
     }
   }
@@ -75,9 +79,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final newEggs = List<Egg>.from(current.eggs)..remove(event.egg);
     final newScore = current.score + eggScore;
 
+    totalDroppedEggs++;
+
     emit(current.copyWith(eggs: newEggs, score: newScore));
 
-    if (totalDroppedEggs >= totalEggsToDrop && current.missedEggsCount < 3) {
+    // Проверяем победу — если пойманы все яйца и игра не окончена
+    if (totalDroppedEggs >= totalEggsToDrop &&
+        current.missedEggsCount > 0) {
       emit(GameWon(score: newScore));
     }
   }
@@ -104,6 +112,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onRestartPressed(RestartPressed event, Emitter<GameState> emit) {
     totalDroppedEggs = 0;
-    emit(GameRunning(score: 0, eggs: [], chickenX: 0.0, paused: false));
+    missedEggsCount = 3;
+    emit(GameRunning(
+      score: 0,
+      eggs: [],
+      chickenX: 0.0,
+      paused: false,
+      missedEggsCount: missedEggsCount,
+      showMissedIcon: false,
+      multiplier: 1,
+    ));
   }
 }

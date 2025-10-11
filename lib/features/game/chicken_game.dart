@@ -23,9 +23,8 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
   async.Timer? _eggTimer;
 
   void pause() => isPaused = true;
+
   void resume() => isPaused = false;
-
-
 
   @override
   Future<void> onLoad() async {
@@ -45,27 +44,18 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
 
     eggSprites = [for (int i = 1; i <= 12; i++) await loadSprite('egg_$i.png')];
 
-    _startEggTimer();
+    _startSpawningEggs();
 
     overlays.add('ScoreDisplay');
   }
 
-  void _startEggTimer() {
-    _eggTimer?.cancel();
-    _eggTimer = async.Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!isPaused) {
-        _spawnSingleEgg();
-      }
-    });
+  Future<void> _startSpawningEggs() async {
+    for (int i = 0; i < 8; i++) {
+      if (isRemoving) break;
+      _spawnSingleEgg();
+      await Future.delayed(const Duration(milliseconds: 1000));
+    }
   }
-
-  // Future<void> _startSpawningEggs() async {
-  //   for (int i = 0; i < 5; i++) {
-  //     if (isRemoving) break;
-  //     _spawnSingleEgg();
-  //     await Future.delayed(const Duration(milliseconds: 1000));
-  //   }
-  // }
 
   void _spawnSingleEgg() {
     debugPrint('Egg spawned at ${DateTime.now()}');
@@ -95,12 +85,14 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
   void update(double dt) {
     super.update(dt);
 
-
     for (final component in children.whereType<Egg>()) {
-      if (component.position.y > size.y) {
-        remove(component);
-        bloc.add(EggMissed(component));
-        continue;
+      if (isPaused) return;
+      for (final component in children.whereType<Egg>()) {
+        if (component.position.y > size.y) {
+          remove(component);
+          bloc.add(EggMissed(component));
+          continue;
+        }
       }
 
       if (chicken != null) {
@@ -128,12 +120,42 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
 
   @override
   void onTapDown(TapDownEvent event) {
-    final tapX = event.localPosition.x;
-    chicken?.moveTo(tapX);
+    if (isPaused) return;
+    chicken?.moveTo(event.localPosition.x);
   }
+
   @override
   void onRemove() {
     _eggTimer?.cancel();
     super.onRemove();
+  }
+
+  Future<void> restartGame() async {
+    debugPrint('🔄 Restarting ChickenGame...');
+
+    // 1. Сброс состояния BLoC
+    bloc.add(RestartPressed());
+
+    // 2. Остановить таймер яиц
+    _eggTimer?.cancel();
+
+    // 3. Удаляем все яйца
+    final eggs = children.whereType<Egg>().toList();
+    for (final egg in eggs) {
+      egg.removeFromParent();
+    }
+
+    // 4. Сброс игровых переменных
+    isPaused = false;
+
+    // 5. Запускаем новые яйца
+    _startSpawningEggs();
+
+    // 6. HUD
+    if (!overlays.isActive('ScoreDisplay')) {
+      overlays.add('ScoreDisplay');
+    }
+
+    debugPrint('✅ Game restarted (без пересоздания фона и курицы)');
   }
 }

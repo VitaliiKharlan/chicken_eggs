@@ -77,6 +77,7 @@ class PauseOverlayWidget extends StatelessWidget {
             iconSize: 180,
             onPressed: () {
               context.read<GameBloc>().add(ResumePressed());
+              game.resume();
               game.overlays.remove('PauseMenu');
             },
           ),

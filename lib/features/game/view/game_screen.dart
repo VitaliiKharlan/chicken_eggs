@@ -14,7 +14,6 @@ import '../widgets/lose_overlay_widget.dart';
 import '../widgets/pause_button_widget.dart';
 import '../widgets/pause_overlay_widget.dart';
 import '../widgets/score_display_widget.dart';
-import '../widgets/win_overlay_widget.dart';
 
 @RoutePage()
 class GameScreen extends StatefulWidget {
@@ -55,7 +54,16 @@ class _GameScreenState extends State<GameScreen> {
               overlayBuilderMap: {
                 'ScoreDisplay': (ctx, game) => ScoreDisplayWidget(game: game),
                 'PauseMenu': (ctx, game) => PauseOverlayWidget(game: game),
-
+                'LoseOverlay': (ctx, game) {
+                  final state = game.bloc.state;
+                  final score = state is GameOver ? state.score : 0;
+                  return LoseOverlayWidget(game: game, score: score);
+                },
+                'WinOverlay': (ctx, game) {
+                  final state = game.bloc.state;
+                  final score = state is GameOver ? state.score : 0;
+                  return LoseOverlayWidget(game: game, score: score);
+                },
               },
             ),
           ),
@@ -123,28 +131,13 @@ class _GameScreenState extends State<GameScreen> {
             listener: (context, state) {
               if (state is GameOver) {
                 game.pause();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) => LoseOverlayWidget(
-                    game: game,
-                    score: state.score,
-                  ),
-                );
-              } else if (state is GameWon) {
-                game.pause();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) => WinOverlayWidget(
-                    game: game,
-                    score: state.score,
-                  ),
-                );
+                if (!game.overlays.isActive('LoseOverlay')) {
+                  game.overlays.add('LoseOverlay');
+                }
               }
             },
             child: const SizedBox.shrink(),
-          ),
+          )
         ],
       ),
     );

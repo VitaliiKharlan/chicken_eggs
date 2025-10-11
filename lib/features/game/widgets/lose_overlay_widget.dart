@@ -10,6 +10,7 @@ import '../chicken_game.dart';
 class LoseOverlayWidget extends StatelessWidget {
   final ChickenGame game;
   final int score;
+
   // final int bestScore;
 
   const LoseOverlayWidget({
@@ -90,7 +91,7 @@ class LoseOverlayWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 24),
-            
+
                   TextButton(
                     onPressed: () {
                       context.router.replace(HomeRoute());
@@ -106,7 +107,7 @@ class LoseOverlayWidget extends StatelessWidget {
                     ),
                     child: const Text('HOME'),
                   ),
-            
+
                   SizedBox(height: 92),
                   ActionButtonWidget(
                     iconAsset: AppImages.actionTryAgain,
@@ -114,7 +115,9 @@ class LoseOverlayWidget extends StatelessWidget {
                     width: 256,
                     iconSize: 180,
                     onPressed: () {
-                      // context.router.replace(const GameRoute());
+                      game.overlays.remove('LoseOverlay');
+                      game.restartGame();
+                      // game.restartGame();
                     },
                   ),
                 ],
