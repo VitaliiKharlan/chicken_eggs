@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/egg.dart';
 import 'game_event.dart';
@@ -56,7 +57,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       emit(currentState.copyWith(showMissedIcon: false));
     }
 
-    // Проверяем конец игры
+
     if (totalDroppedEggs >= totalEggsToDrop) {
       if (newMissedCount > 0) {
         emit(GameWon(score: current.score));
@@ -81,6 +82,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final newScore = current.score + eggScore;
     final newMissedCount = current.missedEggsCount;
 
+    // Начисляем монеты за пойманное яйцо
+    _addCoinsForEgg(event.egg);
+
     // Проверяем конец игры
     if (totalDroppedEggs >= totalEggsToDrop) {
       if (newMissedCount > 0) {
@@ -90,6 +94,18 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
     } else {
       emit(current.copyWith(eggs: newEggs, score: newScore));
+    }
+  }
+
+  Future<void> _addCoinsForEgg(Egg egg) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final currentCoins = prefs.getInt('player_coins') ?? 1000;
+      // Начисляем монеты равные значению яйца
+      final coinsToAdd = egg.value;
+      await prefs.setInt('player_coins', currentCoins + coinsToAdd);
+    } catch (e) {
+      // Игнорируем ошибки сохранения
     }
   }
 

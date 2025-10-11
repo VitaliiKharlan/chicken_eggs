@@ -4,11 +4,9 @@ import 'package:chicken_eggs/features/leaderboard/widgets/leaderboard_list_widge
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/router/router.dart';
 import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/system_button_widget.dart';
 import '../data/leaderboard_mock_data.dart';
-
 
 @RoutePage()
 class LeaderboardScreen extends StatelessWidget {
@@ -43,13 +41,10 @@ class LeaderboardScreen extends StatelessWidget {
                   InkWell(
                     child: SystemButtonWidget(
                       iconAsset: AppSvgImages.iconBack,
-                      onPressed: (){
-                        context.router.push(const MenuRoute());
+                      onPressed: () {
+                        context.router.maybePop();
                       },
                     ),
-                    // onTap: () {
-                    //   context.router.replace(const MenuRoute());
-                    // },
                   ),
                 ],
               ),
@@ -92,7 +87,6 @@ class LeaderboardScreen extends StatelessWidget {
                       child: LeaderboardListWidget(items: leaderboard),
                     ),
                   ),
-
                 ],
               ),
             ),

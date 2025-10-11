@@ -5,6 +5,7 @@ import 'package:chicken_eggs/core/theme/app_images.dart';
 import 'package:chicken_eggs/core/theme/app_svg_images.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/router/router.dart';
 import '../../../core/widgets/coin_counter_widget.dart';
@@ -22,7 +23,7 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final int coins = 1000;
+  int coins = 1000;
 
   @override
   void initState() {
@@ -31,6 +32,14 @@ class _MenuScreenState extends State<MenuScreen>
       vsync: this,
       duration: const Duration(seconds: 3),
     )..repeat(reverse: true);
+    _loadCoins();
+  }
+
+  Future<void> _loadCoins() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      coins = prefs.getInt('player_coins') ?? 1000;
+    });
   }
 
   @override
@@ -94,7 +103,7 @@ class _MenuScreenState extends State<MenuScreen>
                   SystemButtonWidget(
                     iconAsset: AppSvgImages.iconBack,
                     onPressed: (){
-                      context.router.maybePop();
+                      context.router.push(HomeRoute());
                     },
                   ),
 

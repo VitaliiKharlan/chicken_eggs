@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/chicken.dart';
 import 'components/egg.dart';
@@ -16,6 +17,7 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
   Chicken? chicken;
   final Random _random = Random();
   late final List<Sprite> eggSprites;
+  String selectedEggId = 'egg_1';
 
   ChickenGame(this.bloc);
 
@@ -44,9 +46,24 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
 
     eggSprites = [for (int i = 1; i <= 12; i++) await loadSprite('egg_$i.png')];
 
+    // Загружаем выбранное яйцо из SharedPreferences
+    await _loadSelectedEgg();
+
     _startSpawningEggs();
 
     overlays.add('ScoreDisplay');
+  }
+
+  Future<void> _loadSelectedEgg() async {
+    // Импортируем ShopService для получения выбранного яйца
+    try {
+      // Временно используем прямое обращение к SharedPreferences
+      // В реальном проекте лучше использовать dependency injection
+      final prefs = await SharedPreferences.getInstance();
+      selectedEggId = prefs.getString('selected_egg_id') ?? 'egg_1';
+    } catch (e) {
+      selectedEggId = 'egg_1';
+    }
   }
 
   Future<void> _startSpawningEggs() async {
@@ -61,7 +78,10 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
     debugPrint('Egg spawned at ${DateTime.now()}');
     final double x = _random.nextDouble() * (size.x - 40);
     final int value = _random.nextInt(10) + 1;
-    final sprite = eggSprites[_random.nextInt(eggSprites.length)];
+
+    // Используем выбранное яйцо вместо случайного
+    final selectedIndex = _getSelectedEggIndex();
+    final sprite = eggSprites[selectedIndex];
 
     final egg = Egg(sprite: sprite, position: Vector2(x, 0), value: value);
 
@@ -69,12 +89,21 @@ class ChickenGame extends FlameGame with TapCallbacks, DragCallbacks {
     bloc.add(EggDropped(egg));
   }
 
+  int _getSelectedEggIndex() {
+    // Извлекаем номер из selectedEggId (например, "egg_5" -> 5)
+    final eggNumber = int.tryParse(selectedEggId.split('_').last) ?? 1;
+    // Индекс в массиве (egg_1 -> 0, egg_2 -> 1, и т.д.)
+    return (eggNumber - 1).clamp(0, eggSprites.length - 1);
+  }
+
   void spawnEgg() async {
     final double x = _random.nextDouble() * (size.x - 40);
 
     final int value = _random.nextInt(9) + 1;
 
-    final sprite = await loadSprite('egg_1.png');
+    // Используем выбранное яйцо
+    final selectedIndex = _getSelectedEggIndex();
+    final sprite = eggSprites[selectedIndex];
 
     final egg = Egg(sprite: sprite, position: Vector2(x, 0), value: value);
 

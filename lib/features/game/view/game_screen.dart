@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/theme/app_images.dart';
 import '../../../core/widgets/coin_counter_widget.dart';
@@ -26,12 +27,20 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   late final ChickenGame game;
-  final int coins = 1000;
+  int coins = 1000;
 
   @override
   void initState() {
     super.initState();
     game = ChickenGame(context.read<GameBloc>());
+    _loadCoins();
+  }
+
+  Future<void> _loadCoins() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      coins = prefs.getInt('player_coins') ?? 1000;
+    });
   }
 
   @override

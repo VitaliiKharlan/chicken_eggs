@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chicken_eggs/core/theme/app_svg_images.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,7 +40,7 @@ class ChangeLevelScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SystemButtonWidget(
-                    iconAsset: AppImages.bringBack,
+                    iconAsset: AppSvgImages.iconBack,
                     onPressed: () {
                       context.router.push(MenuRoute());
                     },
